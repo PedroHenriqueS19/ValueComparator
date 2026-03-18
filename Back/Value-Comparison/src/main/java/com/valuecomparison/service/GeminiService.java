@@ -37,10 +37,11 @@ public class GeminiService {
             String promptTemplate = """
                     Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços.
                     Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS para instrução de processo licitatório.
+                    REGRA CRÍTICA: Antes de escrever o relatório, analise o nome do objeto pesquisado. Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj') ou se TODOS os produtos da lista fornecida forem completamente irrelevantes ao objeto original, NÃO GERE O RELATÓRIO. Retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA.
                     BASE LEGAL:
                     1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).
                     2. Decreto Estadual/SP nº 67.888/2023 (Definição do valor estimado).
-                    3. Em hipótese alguma use marketplace como método de avaliação.
+                    3. Em hipótese alguma use marketplace como método de avaliação, exemplo de marketplace: Mercado Livre, Shopee, Magalu, Kabum, Amazon e etc..
                     OBJETO DA PESQUISA: "{{TERMO}}"
                     DATA DA CONSULTA: {{DATA}}
                     DADOS COLETADOS (Série de Preços):
@@ -95,10 +96,14 @@ public class GeminiService {
             if (candidates.isEmpty()) {
                 return "A IA não gerou resposta. Motivo: " + root.path("promptFeedback").toString();
             }
-            return candidates.get(0).path("content").path("parts").get(0).path("text").asText();
+            String respostaIA = candidates.get(0).path("content").path("parts").get(0).path("text").asText();
+            if (respostaIA.contains("INVALIDEZ_DETECTADA")) {
+                throw new RuntimeException("O termo pesquisado é inválido ou não possui correlação com produtos reais de mercado.");
+            }
+            return respostaIA;
         } catch (Exception e) {
             e.printStackTrace();
-            return "ERRO TÉCNICO: " + e.getMessage();
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
