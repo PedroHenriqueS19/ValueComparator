@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Valores</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <div id="auth-screen" class="auth-wrapper active">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="ph ph-scales"></i>
+                <h1>Comparador</h1>
+                <p>Estimativa de Preços com IA</p>
+            </div>
+            
+            <div class="auth-form">
+                <div class="input-group">
+                    <i class="ph ph-user"></i>
+                    <input type="text" id="login-input" placeholder="Usuário" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <i class="ph ph-lock-key"></i>
+                    <input type="password" id="senha-input" placeholder="Senha">
+                </div>
+                
+                <button id="btn-login" class="btn-main">Entrar no Sistema</button>
+                <button id="btn-register" class="btn-text">Criar nova conta</button>
+                <p id="auth-message" class="message"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-screen" class="app-layout hidden">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="ph-fill ph-scales"></i>
+                <span>Comparador</span>
+            </div>
+            <nav class="sidebar-menu">
+                <button id="tab-search" class="nav-item active">
+                    <i class="ph ph-magnifying-glass"></i> Nova Pesquisa
+                </button>
+                <button id="tab-history" class="nav-item">
+                    <i class="ph ph-clock-counter-clockwise"></i> Histórico
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="btn-logout" class="nav-item btn-logout">
+                    <i class="ph ph-sign-out"></i> Sair do Sistema
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="view-search" class="view-section active">
+                <div class="section-header">
+                    <h2>Gerar Relatório de Preços</h2>
+                    <p>Digite o nome do objeto para realizar a pesquisa de Sítios Eletrônicos.</p>
+                </div>
+                
+                <div class="search-box">
+                    <i class="ph ph-shopping-cart"></i>
+                    <input type="text" id="search-input" placeholder="Ex: Monitor Dell 24 polegadas..." autocomplete="off">
+                    <button id="btn-search" class="btn-main">Pesquisar</button>
+                </div>
+
+                <div id="loading" class="loading-state hidden">
+                    <div class="spinner"></div>
+                    <p>A Inteligência Artificial está analisando as fontes. Isso pode levar até 30 segundos...</p>
+                </div>
+
+                <div id="report-container" class="report-card hidden">
+                    <div class="report-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge">Relatório Oficial gerado por IA</span>
+                        <button id="btn-export-pdf" class="btn-main" style="width: auto; padding: 8px 15px; margin: 0; background: var(--success);"><i class="ph ph-file-pdf"></i> Exportar PDF</button>
+                    </div>
+                    <div id="report-content" class="markdown-body"></div>
+                </div>
+            </section>
+
+            <section id="view-history" class="view-section hidden">
+                <div class="section-header">
+                    <h2>Histórico de Consultas</h2>
+                    <p>Acesse os relatórios das pesquisas salvas anteriormente.</p>
+                </div>
+                
+                <div class="history-container">
+                    <div id="history-list" class="history-grid">
+                        <p class="text-muted"><i class="ph ph-spinner-gap spin"></i> Carregando seu histórico...</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
