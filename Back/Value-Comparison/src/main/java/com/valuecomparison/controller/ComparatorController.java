@@ -1,10 +1,14 @@
 package com.valuecomparison.controller;
 
 import com.valuecomparison.dto.ProductDTO;
+import com.valuecomparison.model.Report;
+import com.valuecomparison.repository.ReportRepository;
 import com.valuecomparison.service.GeminiService;
 import com.valuecomparison.service.ScraperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -16,21 +20,30 @@ public class ComparatorController {
     private ScraperService scraperService;
     @Autowired
     private GeminiService geminiService;
+    @Autowired
+    private ReportRepository reportRepository;
+
     @GetMapping("/status")
     public String checkStatus() {
         return "AI-powered online server!";
     }
-    // Returns the text of the report.
     @GetMapping("/report")
     public String generateReport(@RequestParam("q") String query) {
-        System.out.println("1. Receiving Order': " + query); // Passo 1: Search for the data on the web. (Google Shopping / SerpApi)
+        System.out.println("1. Recebendo Pedido: " + query);
         List<ProductDTO> products = scraperService.searchProducts(query);
-        System.out.println("2. Products found: " + products.size());
         if (products.isEmpty()) {
-            return "No products found to generate a report.";
-        } // Passo 2: Send it to Artificial Intelligence for analysis.
-        System.out.println("3. Sending to Gemini for analysis...");
-        String report = geminiService.generatePurchaseReport(products, query);
-        return report;
+            return "Nenhum produto encontrado para gerar relatório.";
+        }
+        System.out.println("2. Enviando para o Gemini analisar...");
+        String reportContent = geminiService.generatePurchaseReport(products, query);
+        String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        Report newReport = new Report(query, reportContent, usuarioLogado);
+        reportRepository.save(newReport);
+        System.out.println("3. Relatório salvo no banco por: " + usuarioLogado);
+        return reportContent;
+    }
+    @GetMapping("/history")
+    public List<Report> getHistory() {
+        return reportRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate"));
     }
 }

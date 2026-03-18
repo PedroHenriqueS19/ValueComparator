@@ -112,6 +112,7 @@ public class GeminiService {
                 
                 **4. Metodologia de Cálculo Aplicada**
                 - Média / Mediana / Menor Preço (Calcule apenas com os válidos)
+                
                 **5. Conclusão e Valor de Referência**
                 [Indique qual valor deve ser adotado. Se só houver marketplaces, justifique juridicamente a impossibilidade de estimar o valor.]
                 """;
