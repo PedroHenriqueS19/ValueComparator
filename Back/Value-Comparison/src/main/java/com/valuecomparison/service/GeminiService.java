@@ -40,6 +40,7 @@ public class GeminiService {
                     BASE LEGAL:
                     1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).
                     2. Decreto Estadual/SP nº 67.888/2023 (Definição do valor estimado).
+                    3. Em hipótese alguma use marketplace como método de avaliação.
                     OBJETO DA PESQUISA: "{{TERMO}}"
                     DATA DA CONSULTA: {{DATA}}
                     DADOS COLETADOS (Série de Preços):
