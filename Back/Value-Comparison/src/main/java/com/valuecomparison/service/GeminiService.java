@@ -34,41 +34,7 @@ public class GeminiService {
                         .append(" | Link: ").append(p.getLink()).append("\n");
             }
             // 3. O PROMPT JURÍDICO (Usando placeholders seguros {{VARIAVEL}})
-            String promptTemplate = """
-                    Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços.
-                    Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS para instrução de processo licitatório.
-                    REGRA CRÍTICA: Antes de escrever o relatório, analise o nome do objeto pesquisado. Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj') ou se TODOS os produtos da lista fornecida forem completamente irrelevantes ao objeto original, NÃO GERE O RELATÓRIO. Retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA.
-                    BASE LEGAL:
-                    1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).
-                    2. Decreto Estadual/SP nº 67.888/2023 (Definição do valor estimado).
-                    3. Em hipótese alguma use marketplace como método de avaliação, exemplo de marketplace: Mercado Livre, Shopee, Magalu, Kabum, Amazon e etc..
-                    OBJETO DA PESQUISA: "{{TERMO}}"
-                    DATA DA CONSULTA: {{DATA}}
-                    DADOS COLETADOS (Série de Preços):
-                    {{DADOS}}
-                    DIRETRIZES DE EXECUÇÃO:
-                    1. Análise Crítica: Descarte itens que não correspondam exatamente à especificação técnica ou que apresentem preços manifestamente inexequíveis ou excessivos (outliers).
-                    2. Metodologia: Utilize preferencialmente a MEDIANA ou o MENOR PREÇO (justifique a escolha visando a economicidade).
-                    3. Formatação: Gere o relatório estritamente em Markdown.
-                    ESTRUTURA OBRIGATÓRIA DO RELATÓRIO:
-                    # RELATÓRIO TÉCNICO DE ESTIMATIVA DE PREÇOS
-                    **1. Objeto:** [Repetir o nome do objeto]
-                    **2. Parâmetro de Pesquisa:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021 (Sítios Eletrônicos).                   
-                    **3. Tabela Comparativa de Preços (Cesta de Preços Válidos)**
-                    | Descrição do Item | Fornecedor (Fonte) | Preço Unitário |
-                    | :--- | :--- | :--- |
-                    | ... | ... | ... |                   
-                    **4. Metodologia de Cálculo Aplicada**
-                    - Média Aritmética: R$ ...
-                    - Mediana: R$ ...
-                    - Menor Preço: R$ ...
-                    **5. Conclusão e Valor de Referência**
-                    [Indique qual valor deve ser adotado como Estimado para a licitação. Justifique com base no Art. 6º do Decreto 67.888/2023.]
-                    """;
-            String prompt = promptTemplate
-                    .replace("{{TERMO}}", searchedName)
-                    .replace("{{DATA}}", dateAndTime)
-                    .replace("{{DADOS}}", dataProducts.toString());
+            String prompt = getString(searchedName, dateAndTime, dataProducts);
             // 4. Monta o JSON
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> part = new HashMap<>();
@@ -97,6 +63,7 @@ public class GeminiService {
                 return "A IA não gerou resposta. Motivo: " + root.path("promptFeedback").toString();
             }
             String respostaIA = candidates.get(0).path("content").path("parts").get(0).path("text").asText();
+            System.out.println("--- RESPOSTA CRUA DA IA --- \n" + respostaIA);
             if (respostaIA.contains("INVALIDEZ_DETECTADA")) {
                 throw new RuntimeException("O termo pesquisado é inválido ou não possui correlação com produtos reais de mercado.");
             }
@@ -105,5 +72,53 @@ public class GeminiService {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    private static String getString(String searchedName, String dateAndTime, StringBuilder dataProducts) {
+        String promptTemplate = """
+                Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços.
+                Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS para instrução de processo licitatório.
+                
+                REGRA DE SANIDADE: Analise o nome do objeto pesquisado ("{{TERMO}}"). Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj', '12341234'), retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA e ignore o resto.
+                
+                BASE LEGAL:
+                1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).
+                2. Decreto Estadual/SP nº 67.888/2023 (Definição do valor estimado).
+                3. VEDAÇÃO A MARKETPLACES: Em hipótese alguma utilize preços de marketplaces (ex: Mercado Livre, Shopee, Amazon, Magalu, Kabum) para o cálculo final. 
+                
+                OBJETO DA PESQUISA: "{{TERMO}}"
+                DATA DA CONSULTA: {{DATA}}
+                DADOS COLETADOS (Série de Preços):
+                {{DADOS}}
+                
+                DIRETRIZES DE EXECUÇÃO:
+                1. Análise Crítica: Se TODOS os dados coletados vierem de Marketplaces, gere o relatório normalmente, mas conclua que não foi possível formar preço devido à restrição das fontes. NÃO use a palavra INVALIDEZ_DETECTADA neste caso.
+                2. DIVERSIDADE DE FONTES: NUNCA repita o mesmo fornecedor/loja na Tabela Comparativa. Se houver vários produtos da mesma loja na lista, escolha apenas o que tiver o menor preço e descarte os demais.
+                3. Metodologia: Utilize preferencialmente a MEDIANA ou o MENOR PREÇO (apenas com fontes válidas e distintas).
+                4. Formatação: Gere o relatório estritamente em Markdown misturado com HTML para cores, conforme estrutura abaixo.
+                
+                ESTRUTURA OBRIGATÓRIA DO RELATÓRIO:
+                # RELATÓRIO TÉCNICO DE ESTIMATIVA DE PREÇOS
+                **1. Objeto:** [Repetir o nome do objeto]
+                **2. Parâmetro de Pesquisa:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021.
+                **3. Tabela Comparativa de Preços**
+                | Descrição do Item | Fornecedor (Fonte) | Preço Unitário | Observação |
+                | :--- | :--- | :--- | :--- |
+                *(Lembre-se: Fornecedores únicos na tabela. Siga RIGOROSAMENTE as regras de cores HTML abaixo para a coluna Observação)*
+                
+                REGRAS DE CORES NA COLUNA OBSERVAÇÃO (Use HTML <span>):
+                - Se a fonte for VÁLIDA: O texto deve ser: <span style="color: green; font-weight: bold;">✅ Fonte válida</span>
+                - Se a fonte for DESCARGADA (Marketplace/Repetida): O texto deve ser: <span style="color: red;">❌ Descartado (Marketplace)</span> ou <span style="color: red;">❌ Descartado (Fonte Duplicada)</span>
+                
+                **4. Metodologia de Cálculo Aplicada**
+                - Média / Mediana / Menor Preço (Calcule apenas com os válidos)
+                **5. Conclusão e Valor de Referência**
+                [Indique qual valor deve ser adotado. Se só houver marketplaces, justifique juridicamente a impossibilidade de estimar o valor.]
+                """;
+        String prompt = promptTemplate
+                .replace("{{TERMO}}", searchedName)
+                .replace("{{DATA}}", dateAndTime)
+                .replace("{{DADOS}}", dataProducts.toString());
+        return prompt;
     }
 }
