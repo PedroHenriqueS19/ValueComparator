@@ -25,7 +25,7 @@ public class GeminiService {
             // 1. Date and Time
             String dateAndTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
-            // 2. Prepare data
+            // 2. Prepara os dados
             StringBuilder dataProducts = new StringBuilder();
             for (ProductDTO p : products) {
                 dataProducts.append("- Item: ").append(p.getName())
@@ -79,7 +79,7 @@ public class GeminiService {
                 Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços.
                 Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS para instrução de processo licitatório.
                 
-                REGRA DE SANIDADE: Analise o nome do objeto pesquisado ("{{TERMO}}"). Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj', '12341234'), retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA e ignore o resto.
+                REGRA DE SANIDADE: Analise o nome do objeto pesquisado ("{{TERMO}}"). Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj', '12341234'), retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA e ignore o resto, além disso reconheça o " como polegadas quando colocado após um número.
                 
                 BASE LEGAL:
                 1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).

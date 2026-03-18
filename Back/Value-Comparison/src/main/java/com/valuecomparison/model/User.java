@@ -32,7 +32,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Define que todos que se cadastrarem terão permissão básica de "USER"
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
