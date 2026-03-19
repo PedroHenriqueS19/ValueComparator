@@ -1,7 +1,7 @@
 ## 🏛️ Value Comparator
 
 ## 📖 Visão Geral do Projeto
-O Value Comparator PRO é uma aplicação Full-Stack desenvolvida para modernizar, auditar e automatizar a etapa de Pesquisa de Preços em processos de licitação pública.
+O Value Comparator é uma aplicação Full-Stack desenvolvida para modernizar, auditar e automatizar a etapa de Pesquisa de Preços em processos de licitação pública.
 O sistema realiza buscas de preços em tempo real na internet e utiliza Inteligência Artificial (Google Gemini) para atuar como um Agente de Contratação. A IA filtra os resultados aplicando regras estritas da Lei de Licitações (excluindo marketplaces e fontes repetidas), calcula o valor de referência e gera um relatório técnico oficial exportável em PDF, com carimbo de auditoria vinculado ao usuário logado.
 
 ## 🛠️ Stack Tecnológica
