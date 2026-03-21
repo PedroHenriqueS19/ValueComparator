@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valuecomparison.dto.ProductDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -17,14 +18,13 @@ import java.util.Map;
 
 @Service
 public class GeminiService {
-    private static final String API_KEY = "AIzaSyBTzKWtpctG6OadFRV4798iaLnyPyxaDXg";
+    @Value("${api.gemini.key}")
+    private String geminiApiKey;
     private static final String MODEL_NAME = "gemini-2.5-flash";
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL_NAME + ":generateContent?key=" + API_KEY;
     public String generatePurchaseReport(List<ProductDTO> products, String searchedName) {
         try {
             // 1. Date and Time
             String dateAndTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-
             // 2. Prepara os dados
             StringBuilder dataProducts = new StringBuilder();
             for (ProductDTO p : products) {
@@ -44,10 +44,13 @@ public class GeminiService {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("contents", List.of(content));
             String jsonBody = mapper.writeValueAsString(requestBody);
+
+            String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL_NAME + ":generateContent?key=" + geminiApiKey;
+
             // 5. Envio via HttpClient
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(API_URL))
+                    .uri(URI.create(apiUrl))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();

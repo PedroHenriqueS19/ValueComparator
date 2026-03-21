@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valuecomparison.dto.ProductDTO;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,13 +13,13 @@ import java.util.List;
 
 @Service
 public class ScraperService {
-
+    @Value("${api.serp.key}")
+    private String serpApiKey;
     public List<ProductDTO> searchProducts(String searchedProduct) {
         List<ProductDTO> products = new ArrayList<>();
-        String apiKey = "dc4244ef297c0e83b1f4b3eede9ff18df1fa66e3f61f15f6498ff53cd2df1fb4";
         String url = "https://serpapi.com/search.json?engine=google_shopping&q="
                 + searchedProduct.replace(" ", "+")
-                + "&google_domain=google.com.br&gl=br&hl=pt&api_key=" + apiKey;
+                + "&google_domain=google.com.br&gl=br&hl=pt&api_key=" + serpApiKey;
         System.out.println("--- CONSULTANDO SERPAPI E ORDENANDO ---");
         try {
             String jsonAnswer = Jsoup.connect(url)
