@@ -79,50 +79,66 @@ public class GeminiService {
 
     private static String getString(String searchedName, String dateAndTime, StringBuilder dataProducts) {
         String promptTemplate = """
-                Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços.
-                Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS para instrução de processo licitatório.
+                Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços sob a égide da Lei nº 14.133/2021.
+                Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS, atuando como um assistente de auditoria.
                 
-                REGRA DE SANIDADE: Analise o nome do objeto pesquisado ("{{TERMO}}"). Se ele for um texto claramente sem sentido (ex: 'asdasd', 'fjiosdopfihjsdpsfj', '12341234'), retorne EXATAMENTE E APENAS a palavra: INVALIDEZ_DETECTADA e ignore o resto, além disso reconheça o " como polegadas quando colocado após um número.
+                REGRA DE SANIDADE: Se o termo "{{TERMO}}" for sem sentido (ex: 'asdasd'), retorne apenas: INVALIDEZ_DETECTADA. Reconheça " como polegadas.
                 
-                BASE LEGAL:
-                1. Lei nº 14.133/2021, Art. 23, § 1º, inciso III (Pesquisa em sítios eletrônicos).
-                2. Decreto Estadual/SP nº 67.888/2023 (Definição do valor estimado).
-                3. VEDAÇÃO A MARKETPLACES: Em hipótese alguma utilize preços de marketplaces (ex: Mercado Livre, Shopee, Amazon, Magalu, Kabum) para o cálculo final. 
+                SISTEMA DE FILTRAGEM (REGRAS ESTABELECIDAS):
                 
-                OBJETO DA PESQUISA: "{{TERMO}}"
-                DATA DA CONSULTA: {{DATA}}
-                DADOS COLETADOS (Série de Preços):
+                1. VEDAÇÃO A PREÇOS PROMOCIONAIS (ESTRITO): Analise se os títulos indicam "Promoção", "Oferta", "Desconto" ou "Queima de Estoque".
+                   - REGRA: DESCARTAR AUTOMATICAMENTE.
+                   
+                2. FILTRO DE UNIDADE DE MEDIDA (ESTRITO): Verifique se a unidade (Kg, L, ml, g, polegadas, etc.) da loja coincide com o pedido ("{{TERMO}}").
+                   - REGRA: Se a unidade for diferente ou ausente, DESCARTAR AUTOMATICAMENTE para evitar erro de objeto.
+                   
+                3. VEDAÇÃO A MARKETPLACES (ESTRITO): 
+                   - REGRA: Itens de marketplaces (Mercado Livre, Amazon, Magalu, Shopee, etc.) devem ser DESCARTADOS AUTOMATICAMENTE.
+                   
+                4. ANÁLISE DE PREÇO INEXEQUÍVEL (ALERTA): Se o preço for absurdamente mais baixo que a média, MAS não possuir indicação clara de promoção.
+                   - REGRA: NÃO descarte. SINALIZAR como alerta na tabela para diligência do Agente de Contratação.
+                
+                DADOS PARA ANÁLISE:
+                Objeto: "{{TERMO}}" | Data: {{DATA}}
+                Série de Preços:
                 {{DADOS}}
                 
-                DIRETRIZES DE EXECUÇÃO:
-                1. Análise Crítica: Se TODOS os dados coletados vierem de Marketplaces, gere o relatório normalmente, mas conclua que não foi possível formar preço devido à restrição das fontes. NÃO use a palavra INVALIDEZ_DETECTADA neste caso.
-                2. DIVERSIDADE DE FONTES: NUNCA repita o mesmo fornecedor/loja na Tabela Comparativa. Se houver vários produtos da mesma loja na lista, escolha apenas o que tiver o menor preço e descarte os demais.
-                3. Metodologia: Utilize preferencialmente a MEDIANA ou o MENOR PREÇO (apenas com fontes válidas e distintas).
-                4. Formatação: Gere o relatório estritamente em Markdown misturado com HTML para cores, conforme estrutura abaixo.
-                
-                ESTRUTURA OBRIGATÓRIA DO RELATÓRIO:
+                ESTRUTURA DO RELATÓRIO:
                 # RELATÓRIO TÉCNICO DE ESTIMATIVA DE PREÇOS
-                **1. Objeto:** [Repetir o nome do objeto]
-                **2. Parâmetro de Pesquisa:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021.
+                **1. Objeto:** [Nome do objeto]
+                **2. Parâmetro:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021.
+                
                 **3. Tabela Comparativa de Preços**
-                | Descrição do Item | Fornecedor (Fonte) | Preço Unitário | Observação |
+                | Item | Fornecedor | Preço | Status de Validação (Observação) |
                 | :--- | :--- | :--- | :--- |
-                *(Lembre-se: Fornecedores únicos na tabela. Siga RIGOROSAMENTE as regras de cores HTML abaixo para a coluna Observação)*
                 
-                REGRAS DE CORES NA COLUNA OBSERVAÇÃO (Use HTML <span>):
-                - Se a fonte for VÁLIDA: O texto deve ser: <span style="color: green; font-weight: bold;">✅ Fonte válida</span>
-                - Se a fonte for DESCARGADA (Marketplace/Repetida): O texto deve ser: <span style="color: red;">❌ Descartado (Marketplace)</span> ou <span style="color: red;">❌ Descartado (Fonte Duplicada)</span>
+                REGRAS DE STATUS (Use HTML <span> para cores):
+                - Válido: <span style="color: green; font-weight: bold;">✅ Fonte Válida</span>
+                - Alerta Inexequível: <span style="color: orange; font-weight: bold;">⚠️ Atenção: Possível Preço Inexequível (Decisão do Agente)</span>
+                - Descartado (Promoção): <span style="color: red;">❌ Descartado (Preço Promocional)</span>
+                - Descartado (Medida): <span style="color: red;">❌ Descartado (Unidade/Medida Incompatível)</span>
+                - Descartado (Marketplace): <span style="color: red;">❌ Descartado (Marketplace)</span>
                 
-                **4. Metodologia de Cálculo Aplicada**
-                - Média / Mediana / Menor Preço (Calcule apenas com os válidos)
+                **4. Metodologia de Cálculo**
+                - Explique que o cálculo baseia-se nos itens não descartados.
+                - REGRA OBRIGATÓRIA: Se houver itens com "Alerta Inexequível", explique que serão apresentados dois cenários de cálculo para subsidiar a tomada de decisão do Agente de Contratação, garantindo a segurança jurídica da licitação.
                 
                 **5. Conclusão e Valor de Referência**
-                [Indique qual valor deve ser adotado. Se só houver marketplaces, justifique juridicamente a impossibilidade de estimar o valor.]
+                Apresente os valores finais rigorosamente da seguinte forma:
+                
+                SE HOUVER ITENS COM ALERTA INEXEQUÍVEL, APRESENTE:
+                **Cenário 1: Cálculo Amplo (Considerando Fontes Válidas + Inexequíveis)**
+                - [Demonstre a conta: Soma dos X itens / Quantidade = Média]
+                
+                **Cenário 2: Cálculo Conservador (Apenas Fontes Válidas, excluindo Inexequíveis)**
+                - [Demonstre a conta: Soma apenas dos itens puramente verdes / Quantidade = Média]
+                
+                *(Se não houver nenhum item inexequível, apresente apenas um cálculo de Média Padrão com os itens Válidos).*
                 """;
-        String prompt = promptTemplate
+
+        return promptTemplate
                 .replace("{{TERMO}}", searchedName)
                 .replace("{{DATA}}", dateAndTime)
                 .replace("{{DADOS}}", dataProducts.toString());
-        return prompt;
     }
 }
