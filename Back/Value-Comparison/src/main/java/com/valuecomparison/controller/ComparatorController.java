@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comparator")
-@CrossOrigin(origins = "*")
 public class ComparatorController {
     @Autowired
     private ScraperService scraperService;
