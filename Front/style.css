@@ -1,5 +1,4 @@
-/*VARIÁVEIS DE CORES MODERNAS*/
-   :root {
+:root {
     --primary: #4f46e5;
     --primary-hover: #4338ca;
     --bg-dark: #0f172a;
@@ -16,6 +15,7 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 /*Utilitários*/
 .hidden { display: none !important; }
 .active { display: flex !important; }
+
 /*TELA DE LOGIN*/
 .auth-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--bg-light) 0%, #e0e7ff 100%); }
 .auth-card { background: var(--surface); padding: 50px 40px; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); width: 100%; max-width: 420px; text-align: center; }
@@ -32,6 +32,7 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 .btn-text { width: 100%; padding: 10px; background: transparent; color: var(--text-muted); border: none; font-size: 0.9rem; cursor: pointer; margin-top: 5px; transition: 0.3s; }
 .btn-text:hover { color: var(--primary); }
 .message { margin-top: 15px; font-size: 0.9rem; font-weight: 500; min-height: 20px; }
+
 /*LAYOUT DO SISTEMA (DASHBOARD)*/
 .app-layout { display: flex; height: 100vh; }
 /*Menu Lateral*/
@@ -45,6 +46,7 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 .nav-item.active { background: var(--primary); color: white; }
 .sidebar-footer { padding: 0 15px; }
 .btn-logout:hover { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+
 /*Área Principal*/
 .main-content { flex: 1; padding: 40px; overflow-y: auto; background: var(--bg-light); }
 .view-section { display: flex; flex-direction: column; max-width: 900px; margin: 0 auto; }
@@ -52,6 +54,7 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 .section-header { margin-bottom: 30px; }
 .section-header h2 { font-size: 1.8rem; color: var(--text-main); }
 .section-header p { color: var(--text-muted); margin-top: 5px; }
+
 /*ÁREA DE PESQUISA E RELATÓRIO*/
 .search-box { display: flex; gap: 15px; background: var(--surface); padding: 10px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); align-items: center; margin-bottom: 30px; }
 .search-box i { font-size: 1.5rem; color: var(--text-muted); margin-left: 10px; }
@@ -60,14 +63,29 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 .loading-state { text-align: center; padding: 50px; color: var(--text-muted); }
 .spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top: 4px solid var(--primary); border-radius: 50%; margin: 0 auto 20px auto; animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
-.report-card { background: var(--surface); padding: 40px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid var(--border); line-height: 1.6; }
+.report-card { background: var(--surface); padding: 40px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid var(--border); line-height: 1.6; transition: opacity 0.3s; }
 .report-header { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--bg-light); }
 .badge { background: #e0e7ff; color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
-/*Estilos do Markdown gerado*/
+
+/* ESTILOS DO MARKDOWN GERADO E TABELA RESPONSIVA (REFATORADO) */
 .markdown-body h1 { color: var(--text-main); font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
 .markdown-body h2 { color: var(--text-main); font-size: 1.2rem; margin-top: 25px; margin-bottom: 15px; }
-.markdown-body table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95rem; }
+.markdown-body table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin: 20px 0; 
+    font-size: 0.95rem; 
+    display: block; 
+    overflow-x: auto; /* Cria rolagem horizontal se não couber */
+    white-space: normal;
+}
 .markdown-body th { background: var(--bg-light); padding: 12px; text-align: left; border-bottom: 2px solid var(--border); }
-.markdown-body td { padding: 12px; border-bottom: 1px solid var(--border); }
+.markdown-body td { 
+    padding: 12px; 
+    border-bottom: 1px solid var(--border); 
+    min-width: 150px; 
+    word-wrap: break-word; /* Quebra texto muito grande */
+}
+
 /*HISTÓRICO (PREPARAÇÃO)*/
 .history-grid { display: flex; flex-direction: column; gap: 15px; }
