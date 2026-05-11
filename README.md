@@ -1,4 +1,4 @@
-# 🏛️ Value Comparator PRO
+# 🏛️ Value Comparator
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
