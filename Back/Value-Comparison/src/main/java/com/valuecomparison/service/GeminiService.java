@@ -105,10 +105,13 @@ public class GeminiService {
                 
                 ESTRUTURA DO RELATÓRIO:
                 # RELATÓRIO TÉCNICO DE ESTIMATIVA DE PREÇOS
+
                 **1. Objeto:** [Nome do objeto]
+                
                 **2. Parâmetro:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021.
                 
                 **3. Tabela Comparativa de Preços**
+                
                 | Item | Fornecedor | Preço | Status de Validação (Observação) |
                 | :--- | :--- | :--- | :--- |
                 
@@ -120,20 +123,13 @@ public class GeminiService {
                 - Descartado (Marketplace): <span style="color: red;">❌ Descartado (Marketplace)</span>
                 
                 **4. Metodologia de Cálculo**
+                
                 - Explique que o cálculo baseia-se nos itens não descartados.
-                - REGRA OBRIGATÓRIA: Se houver itens com "Alerta Inexequível", explique que serão apresentados dois cenários de cálculo para subsidiar a tomada de decisão do Agente de Contratação, garantindo a segurança jurídica da licitação.
+                - REGRA OBRIGATÓRIA: Se houver itens com "Alerta Inexequível", explique que serão apresentados dois cenários de cálculo para subsidiar a tomada de decisão do Agente de Contratação.
                 
                 **5. Conclusão e Valor de Referência**
-                Apresente os valores finais rigorosamente da seguinte forma:
                 
-                SE HOUVER ITENS COM ALERTA INEXEQUÍVEL, APRESENTE:
-                **Cenário 1: Cálculo Amplo (Considerando Fontes Válidas + Inexequíveis)**
-                - [Demonstre a conta: Soma dos X itens / Quantidade = Média]
-                
-                **Cenário 2: Cálculo Conservador (Apenas Fontes Válidas, excluindo Inexequíveis)**
-                - [Demonstre a conta: Soma apenas dos itens puramente verdes / Quantidade = Média]
-                
-                *(Se não houver nenhum item inexequível, apresente apenas um cálculo de Média Padrão com os itens Válidos).*
+                Apresente os valores finais rigorosamente da seguinte forma...
                 """;
 
         return promptTemplate
