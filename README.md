@@ -70,3 +70,13 @@ A Inteligência Artificial atua como um funil jurídico com as seguintes travas:
 1. Clone este repositório:
    ```bash
    git clone [https://github.com/SeuUsuario/Value-Comparison.git](https://github.com/SeuUsuario/Value-Comparison.git)
+
+2. O arquivo application.properties está configurado para ler variáveis do sistema visando a segurança (DevSecOps). Na sua IDE, configure as seguintes Environment Variables (Variáveis de Ambiente) nas opções de inicialização do projeto:
+   MONGODB_URI=mongodb+srv://<usuario>:<senha>@<seu-cluster>...
+   JWT_SECRET=SuaSenhaSecretaSuperForte
+   GEMINI_API_KEY=SuaChaveDoGeminiAqui
+   SERP_API_KEY=SuaChaveDoSerpApiAqui
+
+3. Execute a classe principal ValueComparisonApplication.java.
+
+4. Abra o arquivo index.html (Front-end) diretamente no navegador ou utilize a extensão Live Server.
