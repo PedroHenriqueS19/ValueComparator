@@ -58,7 +58,7 @@ public class GeminiService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 System.err.println("Erro API Google: " + response.body());
-                return "Erro na IA (" + response.statusCode() + "): " + response.body();
+                throw new RuntimeException("A Inteligência Artificial está temporariamente indisponível devido à alta demanda do Google (Erro " + response.statusCode() + "). Por favor, tente novamente em alguns instantes.");
             }
             JsonNode root = mapper.readTree(response.body());
             JsonNode candidates = root.path("candidates");

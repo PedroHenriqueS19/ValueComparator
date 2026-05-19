@@ -50,7 +50,7 @@ public class ScraperService {
             }
 
             for (JsonNode item : results) {
-                if (products.size() >= 10) break;
+                if (products.size() >= 3) break;
                 try {
                     String title = item.path("title").asText();
                     String price = item.path("price").asText();

@@ -44,7 +44,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return login; // O Spring pergunta o username, nós devolvemos o nosso login
     }
-    //Conta ativa
+
     @Override
     public boolean isAccountNonExpired() { return true; }
 
