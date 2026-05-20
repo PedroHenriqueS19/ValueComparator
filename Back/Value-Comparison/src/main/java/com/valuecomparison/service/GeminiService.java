@@ -108,7 +108,7 @@ public class GeminiService {
 
                 **1. Objeto:** [Nome do objeto]
                 
-                **2. Parâmetro:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021.
+                **2. Parâmetro:** Inciso III do § 1º do art. 23 da Lei nº 14.133/2021 - "III - utilização de dados de pesquisa publicada em mídia especializada, de tabela de referência formalmente aprovada pelo Poder Executivo federal e de sítios eletrônicos especializados ou de domínio amplo, desde que contenham a data e hora de acesso;".
                 
                 **3. Tabela Comparativa de Preços**
                 
@@ -126,8 +126,10 @@ public class GeminiService {
                 
                 - Explique que o cálculo baseia-se nos itens não descartados.
                 - REGRA OBRIGATÓRIA: Se houver itens com "Alerta Inexequível", explique que serão apresentados dois cenários de cálculo para subsidiar a tomada de decisão do Agente de Contratação.
+                - Desconsidere todos os valores médios e me traga somente a metodologia e os valores unitários, sem realizar o cálculo da média aritimética.
                 
                 **5. Conclusão e Valor de Referência**
+                - Desconsidere todos os valores médios e me traga somente a metodologia e os valores unitários, sem realizar o cálculo da média aritimética.
                 
                 Apresente os valores finais rigorosamente da seguinte forma...
                 """;
