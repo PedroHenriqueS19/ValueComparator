@@ -79,7 +79,7 @@ public class GeminiService {
 
     private static String getString(String searchedName, String dateAndTime, StringBuilder dataProducts) {
         String promptTemplate = """
-                Atue como um Agente de Contratação Pública especialista em Pesquisa de Preços sob a égide da Lei nº 14.133/2021.
+                Atue como um Agente de Pesquisa de Preços especialista em Pesquisa de Preços sob a égide da Lei nº 14.133/2021.
                 Sua tarefa é elaborar um RELATÓRIO TÉCNICO DE PESQUISA DE PREÇOS, atuando como um assistente de auditoria.
                 
                 REGRA DE SANIDADE: Se o termo "{{TERMO}}" for sem sentido (ex: 'asdasd'), retorne apenas: INVALIDEZ_DETECTADA. Reconheça " como polegadas.
@@ -96,7 +96,9 @@ public class GeminiService {
                    - REGRA: Itens de marketplaces (Mercado Livre, Amazon, Magalu, Shopee, etc.) devem ser DESCARTADOS AUTOMATICAMENTE.
                    
                 4. ANÁLISE DE PREÇO INEXEQUÍVEL (ALERTA): Se o preço for absurdamente mais baixo que a média, MAS não possuir indicação clara de promoção.
-                   - REGRA: NÃO descarte. SINALIZAR como alerta na tabela para diligência do Agente de Contratação.
+                   - REGRA: NÃO descarte. SINALIZAR como alerta na tabela para diligência do Agente da pesquisa.
+                   
+                5. Nunca declare o responsável da pesquisa como "Agente da Contratação" e sim como "Agente da Pesquisa de Preços"
                 
                 DADOS PARA ANÁLISE:
                 Objeto: "{{TERMO}}" | Data: {{DATA}}
@@ -130,6 +132,7 @@ public class GeminiService {
                 
                 **5. Conclusão e Valor de Referência**
                 - Desconsidere todos os valores médios e me traga somente a metodologia e os valores unitários, sem realizar o cálculo da média aritimética.
+                - Informe que os valores auferidos serão direcionados para uma tabela apartada, onde será realizado de fato a comparação em um quadro comparativo.
                 
                 Apresente os valores finais rigorosamente da seguinte forma...
                 """;
