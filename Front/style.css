@@ -89,3 +89,52 @@ body { background-color: var(--bg-light); color: var(--text-main); height: 100vh
 
 /*HISTÓRICO (PREPARAÇÃO)*/
 .history-grid { display: flex; flex-direction: column; gap: 15px; }
+
+/* FOOTER */
+.app-footer {
+    background: linear-gradient(to right, #0f172a 0%, #0f172a 50%, #cbd5e1 85%, #ffffff 100%);
+    padding: 24px 20px;
+    margin-top: auto; 
+    text-align: center;
+    font-size: 0.85rem;
+    color: #f1f5f9; 
+    font-family: inherit;
+    border-top: 1px solid rgba(0, 0, 0, 0.05); 
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.footer-content p {
+    margin: 0;
+}
+
+.footer-dev a {
+    color: #a5b4fc; 
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin-left: 4px;
+}
+
+.footer-dev a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Garante que o footer fique sempre no final da tela */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; 
+}
