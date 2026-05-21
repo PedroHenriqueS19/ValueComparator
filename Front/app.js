@@ -1,6 +1,5 @@
 // CONFIGURAÇÕES GERAIS
-const API_URL = "http://localhost:8080/api";
-// const API_URL = "https://valuecomparator-backend-producao.up.railway.app/api"; // <-- Usaremos esta na nuvem!
+const API_URL = "https://valuecomparator.onrender.com";
 let markdownAtual = "";
 let termoAtual = "";
 // Telas Principais
