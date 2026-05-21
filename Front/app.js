@@ -1,5 +1,5 @@
 // CONFIGURAÇÕES GERAIS
-const API_URL = "https://valuecomparator.onrender.com";
+const API_URL = "https://valuecomparator.onrender.com/api";
 let markdownAtual = "";
 let termoAtual = "";
 // Telas Principais
