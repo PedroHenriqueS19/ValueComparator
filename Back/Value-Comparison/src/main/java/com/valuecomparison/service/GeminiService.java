@@ -97,6 +97,8 @@ public class GeminiService {
                    
                 5. Nunca declare o responsável da pesquisa como "Agente da Contratação" e sim como "Agente da Pesquisa de Preços"
                 
+                6. na Estrtura do relatório, nunca informe o nome do agente da pesquisa de preços ou a data em que a pesquisa foi realizada, pois a data deve conter somente no "DADOS PARA ANÁLISE".
+                
                 DADOS PARA ANÁLISE:
                 Objeto: "{{TERMO}}" | Data: {{DATA}}
                 Série de Preços:
