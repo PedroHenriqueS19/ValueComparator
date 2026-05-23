@@ -5,7 +5,7 @@ import com.valuecomparison.model.Report;
 import com.valuecomparison.repository.ReportRepository;
 import com.valuecomparison.service.GeminiService;
 import com.valuecomparison.service.ScraperService;
-import com.valuecomparison.service.PdfService; // Import do novo serviço
+import com.valuecomparison.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
