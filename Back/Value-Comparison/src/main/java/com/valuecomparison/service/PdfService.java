@@ -102,9 +102,9 @@ public class PdfService {
                         <b>Pesquisador Responsável:</b> %s<br/>
                         <b>Data e Hora da Emissão:</b> %s
                     </div>
-                    
+                
                     %s
-                    
+                
                     <div class="footer">
                         Relatório de Preços gerado automaticamente por IA sob a égide da Lei nº 14.133/2021.
                     </div>
@@ -115,7 +115,7 @@ public class PdfService {
         //Transforma o HTML Completo em um Arquivo PDF (Array de Bytes)
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
-            builder.useFastMode(); //Otimização para não travar o servidor
+            builder.useFastMode();
             builder.withHtmlContent(htmlCompleto, null);
             builder.toStream(outputStream);
             builder.run();

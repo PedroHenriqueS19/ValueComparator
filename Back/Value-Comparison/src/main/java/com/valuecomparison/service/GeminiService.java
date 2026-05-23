@@ -21,11 +21,8 @@ public class GeminiService {
     @Value("${api.gemini.key}")
     private String geminiApiKey;
     private static final String MODEL_NAME = "gemini-2.5-flash";
-    public String generatePurchaseReport(List<ProductDTO> products, String searchedName) {
+    public String generatePurchaseReport(List<ProductDTO> products, String searchedName, String dateAndTime) {
         try {
-            // 1. Date and Time
-            String dateAndTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            // 2. Prepara os dados
             StringBuilder dataProducts = new StringBuilder();
             for (ProductDTO p : products) {
                 dataProducts.append("- Item: ").append(p.getName())
@@ -133,8 +130,6 @@ public class GeminiService {
                 **5. Conclusão e Valor de Referência**
                 - Desconsidere todos os valores médios e me traga somente a metodologia e os valores unitários, sem realizar o cálculo da média aritimética.
                 - Informe que os valores auferidos serão direcionados para uma tabela apartada, onde será realizado de fato a comparação em um quadro comparativo.
-                
-                Apresente os valores finais rigorosamente da seguinte forma...
                 """;
 
         return promptTemplate
