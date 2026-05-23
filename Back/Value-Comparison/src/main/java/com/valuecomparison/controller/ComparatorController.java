@@ -27,7 +27,7 @@ public class ComparatorController {
     @Autowired
     private GeminiService geminiService;
     @Autowired
-    private PdfService pdfService; // Injetando o gerador de PDF
+    private PdfService pdfService;
     @Autowired
     private ReportRepository reportRepository;
 
