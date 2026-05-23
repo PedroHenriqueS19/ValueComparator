@@ -44,7 +44,7 @@ public class ComparatorController {
         if (products.isEmpty()) {
             return "Nenhum produto encontrado para gerar relatório.";
         }
-        String dataHoraOficial = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        String dataHoraOficial = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         System.out.println("2. Enviando para o Gemini analisar...");
         String reportContent = geminiService.generatePurchaseReport(products, query, dataHoraOficial);
         String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,7 +61,7 @@ public class ComparatorController {
     public ResponseEntity<byte[]> exportPdf(@RequestBody String markdown) {
         try {
             String usuarioLogado = SecurityContextHolder.getContext().getAuthentication().getName();
-            String dataHoraImpressao = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            String dataHoraImpressao = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             // Converte o Markdown em PDF (Array de bytes)
             byte[] relatorioPdf = pdfService.generatePdfFromMarkdown(markdown, usuarioLogado, dataHoraImpressao);
             // Configura os headers para o navegador entender que é um arquivo para download
