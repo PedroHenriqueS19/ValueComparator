@@ -125,20 +125,23 @@ async function fazerLogin() {
     const login = loginInput.value.trim();
     const senha = senhaInput.value.trim();
     if (!login || !senha) return mostrarMensagem("Preencha login e senha.", "var(--danger)");
+    
     try {
         const resposta = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ login, senha })
         });
-        const token = await resposta.text();
+        const tokenOuErro = await resposta.text(); 
+        
         if (resposta.ok) {
-            localStorage.setItem("jwt_token", token);
+            localStorage.setItem("jwt_token", tokenOuErro);
             loginInput.value = '';
             senhaInput.value = '';
             mostrarApp();
         } else {
-            mostrarMensagem("❌ Login ou senha incorretos.", "var(--danger)");
+            // AGORA ELE VAI MOSTRAR O MOTIVO REAL DA FALHA
+            mostrarMensagem("❌ " + tokenOuErro, "var(--danger)");
         }
     } catch (erro) {
         mostrarMensagem("Erro de conexão com o servidor.", "var(--danger)");
